@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { CurrentDate, DateStyle, ProductStyle } from "../Main/Style";
 
 class Table extends Component {
+  
   render() {
     return (
       <>
@@ -18,7 +19,6 @@ class Table extends Component {
               <>
                 <DateStyle>
                   <td colSpan={3}>
-                    {" "}
                     <CurrentDate>
                       <div>{el.date}</div>
                       <a
@@ -38,7 +38,7 @@ class Table extends Component {
                     <td>{item.price}</td>
                     <td>{item.currency}</td>
                   </ProductStyle>
-                ))}{" "}
+                ))}
               </>
             ))}
           </tbody>
