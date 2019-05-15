@@ -218,7 +218,7 @@ export const CurrentDate = styled.div `
     flex-wrap: wrap;
     height: 20px;
     font-size: 0.9rem;
-    div {
+    div:last-child {
         padding-left: 20px;
         color: #497552;
         &:hover {
