@@ -28,7 +28,7 @@ class ReportForm extends Component {
     let products = this.props.products.filter(el => parseInt(el.date) === year);
     console.log(products);
     let url =
-      "http://data.fixer.io/api/latest?access_key=5e2e34b6141b185a648f1be0c2a84530&symbols=UAH,PLN,USD";
+      "https://cors.io/?http://data.fixer.io/api/latest?access_key=5e2e34b6141b185a648f1be0c2a84530&symbols=UAH,PLN,USD";
     console.log(url);
     fetch(url)
       .then(response => response.json())
