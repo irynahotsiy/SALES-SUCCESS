@@ -1,19 +1,33 @@
 import React, { Component } from "react";
+import AddProduct from "../AddProduct/AddProduct";
+import Table from "../Table/Table";
+
 import {
   Form,
   Products,
-  InputBox,
-  Data,
-  Button,
   Sum,
   Report,
   Submit,
   Content,
   FormProduct,
-  CurrentDate,
-  DateStyle,
-  ProductStyle
 } from "./Style";
+
+function groupByDate(products) {
+  let groups = {};
+  for (let i = 0; i < products.length; i++) {
+    let date = products[i].date;
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(products[i]);
+  }
+  const groupedProducts = [];
+  for (let date in groups) {
+    groupedProducts.push({ date: date, items: groups[date] });
+  }
+  return groupedProducts;
+};
+
 
 class Main extends Component {
   constructor(props) {
@@ -89,23 +103,6 @@ class Main extends Component {
       dateOfSale: ""
     });
     e.preventDefault();
-  };
-
-  groupByDate = () => {
-    let groups = {};
-    let products = this.state.products;
-    for (let i = 0; i < products.length; i++) {
-      let date = products[i].date;
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(products[i]);
-    }
-    const groupedProducts = [];
-    for (let date in groups) {
-      groupedProducts.push({ date: date, items: groups[date] });
-    }
-    return groupedProducts;
   };
 
   onClearClick = date => {
@@ -190,7 +187,7 @@ class Main extends Component {
   /*render*/
 
   render() {
-    const groupedProducts = this.groupByDate();
+    const groupedProducts = groupByDate(this.state.products);
     let sortByDate = groupedProducts.sort(function(a, b) {
       return new Date(b.date) - new Date(a.date);
     });
@@ -198,7 +195,6 @@ class Main extends Component {
     let getYears = () => {
       let years = [];
       let products = sortByDate;
-
       for (let i = 0; i < products.length; i++) {
         let date = parseInt(products[i].date);
         if (!years.includes(date)) {
@@ -214,114 +210,27 @@ class Main extends Component {
       <>
         <Content>
           <FormProduct>
-            <Form>
+            <Form> 
               <header>Sales success</header>
-
-              <form
-                method="send"
-                onSubmit={this.handleSubmit}
-                autocomplete="off"
-              >
-                {/*Text */}
-                <InputBox>
-                  <label forHTML="product"> Add new product: </label>
-                  <input
-                    type="text"
-                    value={this.state.newItem}
-                    onChange={this.updateVal}
-                    placeholder="Enter your product"
-                    name="product"
-                    required
-                  />
-                </InputBox>
-                {/*Price */}
-                <Data>
-                  <InputBox>
-                    <label forHTML="price">Price:</label>
-                    <input
-                      value={this.state.newPrice}
-                      onChange={this.updatePrice}
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      name="price"
-                      placeholder="Price"
-                      required
-                    />
-                  </InputBox>
-                  {/*Currency */}
-                  <InputBox>
-                    <label forHTML="currency">¤</label>
-                    <select
-                      name="currency"
-                      value={this.state.newCurrency}
-                      onChange={this.updateCurr}
-                      required
-                    >
-                      <option value="UAH">UAH</option>
-                      <option value="USD">USD</option>
-                      <option value="PLN">PLN</option>
-                      <option value="EUR">EUR</option>
-                    </select>
-                  </InputBox>
-                  <InputBox>
-                    {/*Date */}
-                    <label forHTML=""> Date: </label>
-                    <input
-                      type="date"
-                      value={this.state.dateOfSale}
-                      onChange={this.updateDate}
-                      name="date"
-                      placeholder="Date"
-                      required
-                    />
-                  </InputBox>
-                </Data>
-                <Button>
-                  <Submit type="submit" value="Submit" />
-                </Button>
-              </form>
+              <AddProduct 
+              onHandleSubmit={this.handleSubmit}
+              product={this.state.newItem}
+              onAddProduct={this.updateVal}
+              price={this.state.newPrice}
+              onAddPrice={this.updatePrice}
+              curr={this.state.newCurrency}
+              onEddCurr={this.updateCurr}
+              date={this.state.dateOfSale}
+              onEddDate={this.updateDate}
+            />
             </Form>
 
             <Products>
             <header>Products</header>
-              <table>
-                <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Currency</th>
-                </tr>
-                </thead>
-                <tbody>
-                {sortByDate.map(el => (
-                  <>
-                    <DateStyle >
-                      <td colSpan={3}>
-                        {" "}
-                        <CurrentDate>
-                        <div>{el.date}</div>
-                        <a href="#"
-                          onClick={() => {
-                            this.onClearClick(el.date);
-                          }}
-                        >
-                          Clear all of this date
-                        </a>
-                        </CurrentDate>
-                      </td>
-                    </DateStyle>
-                    {el.items.map(item => (
-                      <ProductStyle>
-                        <td>{item.product}</td>
-                        <td>{item.price}</td>
-                        <td>{item.currency}</td>
-                      </ProductStyle>
-                    ))}{" "}
-                  </>
-                ))}
-                </tbody>
-              </table>
+             <Table 
+             sortedProducts={sortByDate}
+             onClear={this.onClearClick}
+             />
              </Products>
             
           </FormProduct>
@@ -330,7 +239,7 @@ class Main extends Component {
          
             <header>Get data for choosen year</header>
             <form
-              autocomplete="off"
+              autoComplete="off"
               onSubmit={e => {
                 e.preventDefault();
                 this.onReport();
