@@ -23,13 +23,10 @@ class ReportForm extends Component {
   };
 
   onReport = () => {
-    debugger;
     let year = parseInt(this.state.year);
     let products = this.props.products.filter(el => parseInt(el.date) === year);
-    console.log(products);
     let url =
       "https://cors.io/?http://data.fixer.io/api/latest?access_key=5e2e34b6141b185a648f1be0c2a84530&symbols=UAH,PLN,USD";
-    console.log(url);
     fetch(url)
       .then(response => response.json())
       .then(
@@ -37,7 +34,6 @@ class ReportForm extends Component {
           let sum = 0;
           for (let i = 0; i < products.length; i++) {
             let price = parseFloat(products[i].price);
-            console.log(price);
             if (this.state.curr === "EUR") {
               if (products[i].currency === result.base) {
                 let priceEUR = price;
