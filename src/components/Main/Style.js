@@ -19,7 +19,7 @@ export const  Form = styled.div `
     padding-right: 250px;
     @media (max-width: 809px) {
         padding-right: 0px;
-        padding: 5px;
+        padding: 15px;
     }
     header {
         padding: 30px 0; 
@@ -27,6 +27,10 @@ export const  Form = styled.div `
         font-size: 2.5rem;
         text-align: center;
         text-transform: uppercase;
+        @media (max-width: 809px) {
+            padding: 10px 0;
+            font-size: 2rem;
+        }
     }
     form{
         padding: 15px;
@@ -81,6 +85,7 @@ export const Button = styled.div `
   margin: 10px 0;
        @media (max-width: 809px) {
            width: 100%;
+           margin: 0;
          }
  
  `
@@ -139,9 +144,12 @@ export const Report = styled.div `
 
 export const Sum = styled.div `
     margin: 20px 0;
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: #497552;
     text-align: center;
+    @media (max-width: 809px) {
+        font-size: 2rem;
+    }
 `
 
 
