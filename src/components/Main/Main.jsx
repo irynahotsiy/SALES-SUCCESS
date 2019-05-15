@@ -30,10 +30,6 @@ class Main extends Component {
       newPrice: "",
       newCurrency: "UAH",
       dateOfSale: "",
-      report: "",
-      year: "",
-      curr: "",
-      isLoaded: false
     };
   }
 
@@ -60,16 +56,7 @@ class Main extends Component {
       dateOfSale: e.target.value
     });
   };
-  updateYear = e => {
-    this.setState({
-      year: e.target.value
-    });
-  };
-  updateCurrency = e => {
-    this.setState({
-      curr: e.target.value
-    });
-  };
+
 
   handleSubmit = e => {
     let products = this.state.products;
@@ -104,55 +91,6 @@ class Main extends Component {
     });
   };
 
-  onReport = () => {
-    debugger;
-    if (this.state.products.length === 0) {
-      this.setState({
-        report: " "
-      });
-    } else {
-      let year = parseInt(this.state.year);
-      let products = this.state.products.filter(
-        el => parseInt(el.date) === year
-      );
-      console.log(products);
-      let url =
-        "http://data.fixer.io/api/latest?access_key=5e2e34b6141b185a648f1be0c2a84530&symbols=UAH,PLN,USD";
-      console.log(url);
-      fetch(url)
-        .then(response => response.json())
-        .then(
-          result => {
-            let sum = 0;
-            for (let i = 0; i < products.length; i++) {
-              let price = parseFloat(products[i].price);
-              console.log(price);
-              if (this.state.curr === "EUR") {
-                if (products[i].currency === result.base) {
-                  let priceEUR = price;
-                  price = priceEUR;
-                } else {
-                  price = price / result.rates[products[i].currency];
-                }
-              } else {
-                price =
-                  (price / result.rates[products[i].currency]) *
-                  result.rates[this.state.curr];
-              }
-              sum += price;
-            }
-            this.setState({
-              report: sum.toFixed(2) + " " + this.state.curr
-            });
-          },
-          error => {
-            this.setState({
-              error
-            });
-          }
-        );
-    }
-  };
 
   componentDidMount() {
     this.hydrateStateWithLocalStorage();
@@ -206,16 +144,15 @@ class Main extends Component {
 
             <Products>
               <header>Products</header>
-              <Table sortedProducts={sortByDate} onClear={this.onClearClick} />
+              <Table 
+              sortedProducts={sortByDate} 
+              onClear={this.onClearClick} />
             </Products>
           </FormProduct>
         </Content>
         <ReportForm
           sortedProducts={sortByDate}
-          onUpdateYear={this.updateYear}
-          onUpdateCurrency={this.updateCurrency}
-          report={this.state.report}
-          onClickReport={this.onReport}
+          products={this.state.products}
         />
       </>
     );
