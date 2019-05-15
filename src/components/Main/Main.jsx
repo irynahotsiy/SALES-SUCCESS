@@ -59,13 +59,6 @@ class Main extends Component {
 
 
   handleSubmit = e => {
-    let products = this.state.products;
-    for (let i = 0; i < products.length; i++) {
-      products[i].visible = false;
-    }
-    this.setState({
-      products: products
-    });
     this.setState({
       products: [
         ...this.state.products,
@@ -73,7 +66,7 @@ class Main extends Component {
           date: this.state.dateOfSale,
           product: this.state.newItem,
           price: this.state.newPrice,
-          currency: this.state.newCurrency
+          currency: this.state.newCurrency,
         }
       ],
       newItem: "",
