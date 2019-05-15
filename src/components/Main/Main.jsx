@@ -1,16 +1,9 @@
 import React, { Component } from "react";
 import AddProduct from "../AddProduct/AddProduct";
 import Table from "../Table/Table";
+import ReportForm from "../ReportForm/ReportForm";
 
-import {
-  Form,
-  Products,
-  Sum,
-  Report,
-  Submit,
-  Content,
-  FormProduct,
-} from "./Style";
+import { Form, Products, Content, FormProduct } from "./Style";
 
 function groupByDate(products) {
   let groups = {};
@@ -26,8 +19,7 @@ function groupByDate(products) {
     groupedProducts.push({ date: date, items: groups[date] });
   }
   return groupedProducts;
-};
-
+}
 
 class Main extends Component {
   constructor(props) {
@@ -192,81 +184,39 @@ class Main extends Component {
       return new Date(b.date) - new Date(a.date);
     });
 
-    let getYears = () => {
-      let years = [];
-      let products = sortByDate;
-      for (let i = 0; i < products.length; i++) {
-        let date = parseInt(products[i].date);
-        if (!years.includes(date)) {
-          years.push(date);
-        }
-      }
-      return years;
-    };
-
-    let years = getYears();
     /*return */
     return (
       <>
         <Content>
           <FormProduct>
-            <Form> 
+            <Form>
               <header>Sales success</header>
-              <AddProduct 
-              onHandleSubmit={this.handleSubmit}
-              product={this.state.newItem}
-              onAddProduct={this.updateVal}
-              price={this.state.newPrice}
-              onAddPrice={this.updatePrice}
-              curr={this.state.newCurrency}
-              onEddCurr={this.updateCurr}
-              date={this.state.dateOfSale}
-              onEddDate={this.updateDate}
-            />
+              <AddProduct
+                onHandleSubmit={this.handleSubmit}
+                product={this.state.newItem}
+                onAddProduct={this.updateVal}
+                price={this.state.newPrice}
+                onAddPrice={this.updatePrice}
+                curr={this.state.newCurrency}
+                onEddCurr={this.updateCurr}
+                date={this.state.dateOfSale}
+                onEddDate={this.updateDate}
+              />
             </Form>
 
             <Products>
-            <header>Products</header>
-             <Table 
-             sortedProducts={sortByDate}
-             onClear={this.onClearClick}
-             />
-             </Products>
-            
+              <header>Products</header>
+              <Table sortedProducts={sortByDate} onClear={this.onClearClick} />
+            </Products>
           </FormProduct>
         </Content>
-        <Report>
-         
-            <header>Get data for choosen year</header>
-            <form
-              autoComplete="off"
-              onSubmit={e => {
-                e.preventDefault();
-                this.onReport();
-              }}
-            >
-              <select onChange={this.updateYear} required>
-                <option value="" disabled selected>
-                  Chose Year
-                </option>
-                {years.map(el => (
-                  <option>{el}</option>
-                ))}
-              </select>
-              <select onChange={this.updateCurrency} required>
-                <option value="" disabled selected>
-                  Currency
-                </option>
-                <option value="UAH">UAH</option>
-                <option value="USD">USD</option>
-                <option value="PLN">PLN</option>
-                <option value="EUR">EUR</option>
-              </select>
-              <Submit type="submit" value="Report" />
-            </form>
-            <Sum>{this.state.report}</Sum>
-          
-        </Report>
+        <ReportForm
+          sortedProducts={sortByDate}
+          onUpdateYear={this.updateYear}
+          onUpdateCurrency={this.updateCurrency}
+          report={this.state.report}
+          onClickReport={this.onReport}
+        />
       </>
     );
   }
