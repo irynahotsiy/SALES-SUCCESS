@@ -15,31 +15,30 @@ class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.sortedProducts.map(el => (
-              <>
-                <DateStyle>
+            {this.props.sortedProducts.map((el, idx) => (
+              <React.Fragment key={idx}>
+                <DateStyle >
                   <td colSpan={3}>
                     <CurrentDate>
                       <div>{el.date}</div>
-                      <a
-                        href="#"
+                      <div
                         onClick={() => {
                           this.props.onClear(el.date);
                         }}
                       >
                         Clear all of this date
-                      </a>
+                      </div>
                     </CurrentDate>
                   </td>
                 </DateStyle>
-                {el.items.map(item => (
-                  <ProductStyle>
+                {el.items.map((item, idx)=> (
+                  <ProductStyle key={idx}>
                     <td>{item.product}</td>
                     <td>{item.price}</td>
                     <td>{item.currency}</td>
                   </ProductStyle>
                 ))}
-              </>
+              </React.Fragment>
             ))}
           </tbody>
         </table>

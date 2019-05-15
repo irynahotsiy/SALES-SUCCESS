@@ -95,7 +95,7 @@ class ReportForm extends Component {
                 Chose Year
               </option>
               {years.map(el => (
-                <option value={el}>{el}</option>
+                <option key={el} value={el}>{el}</option>
               ))}
             </select>
             <select defaultValue={""} onChange={this.updateCurrency} required>
