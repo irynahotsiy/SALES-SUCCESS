@@ -140,6 +140,9 @@ export const Report = styled.div `
             padding: 10px 5px;
             border: 1px solid rgba(255, 166, 0, 1);
         }
+        @media (max-width: 809px) {
+            width: 100%;
+        }
     }
 `
 
