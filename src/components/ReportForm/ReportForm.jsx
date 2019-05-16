@@ -2,30 +2,7 @@ import React, { Component } from "react";
 import { Sum, Report, Submit } from "../Main/Style";
 import Loading from "../Loading/Loading";
 
-async function getURL(url) {
-  let response = await fetch(url);
-  let result = await response.json();
-  return result;
-}
-
-function sum(result, items, curr) {
-  let sum = 0;
-  for (let i = 0; i < items.length; i++) {
-    let price = parseFloat(items[i].price);
-    if (curr === "EUR") {
-      if (items[i].currency === result.base) {
-        let priceEUR = price;
-        price = priceEUR;
-      } else {
-        price = price / result.rates[items[i].currency];
-      }
-    } else {
-      price = (price / result.rates[items[i].currency]) * result.rates[curr];
-    }
-    sum += price;
-  }
-  return sum;
-}
+import { prepareReport } from '../../services/Report';
 
 class ReportForm extends Component {
   constructor(props) {
@@ -53,16 +30,13 @@ class ReportForm extends Component {
     let year = parseInt(this.state.year);
     let products = this.props.products.filter(el => parseInt(el.date) === year);
     let curr = this.state.curr;
-    /*Use https://cors.io/? to fix http/https limitation */ 
-    let url =
-      "https://cors.io/?http://data.fixer.io/api/latest?access_key=5e2e34b6141b185a648f1be0c2a84530&symbols=UAH,PLN,USD";
+
     this.setState ({
         isLoading: true
     })
+    
     try {
-      const rates = await getURL(url);
-
-      let finalSum = sum(rates, products, curr);
+      let finalSum = await prepareReport(products, curr);
       this.setState({
         report: finalSum.toFixed(2) + " " + this.state.curr,
         isLoading: false
