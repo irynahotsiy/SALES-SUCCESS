@@ -92,7 +92,7 @@ class ReportForm extends Component {
     return (
       <>
         <Report>
-          <header>Get data for choosen year</header>
+          <header>Report</header>
           <form
             autoComplete="off"
             onSubmit={e => {
