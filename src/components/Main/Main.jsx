@@ -121,7 +121,7 @@ class Main extends Component {
         <Content>
           <FormProduct>
             <Form>
-              <header>Accaunting App</header>
+              <header>Accounting App</header>
               <AddProduct
                 onHandleSubmit={this.handleSubmit}
                 product={this.state.newItem}
