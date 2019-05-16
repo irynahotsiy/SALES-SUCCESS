@@ -1,91 +1,36 @@
 import React, { Component } from "react";
-import AddProduct from "../AddProduct/AddProduct";
-import Table from "../Table/Table";
+import ProductForm from "../ProductForm/ProductForm";
+import ProductsTable from "../ProductsTable/ProductsTable";
 import ReportForm from "../ReportForm/ReportForm";
 
-import { Form, Products, Content, FormProduct } from "./Style";
-
-function groupByDate(products) {
-  let groups = {};
-  for (let i = 0; i < products.length; i++) {
-    let date = products[i].date;
-    if (!groups[date]) {
-      groups[date] = [];
-    }
-    groups[date].push(products[i]);
-  }
-  const groupedProducts = [];
-  for (let date in groups) {
-    groupedProducts.push({ date: date, items: groups[date] });
-  }
-  return groupedProducts;
-}
+import {
+  ProductFormWrapper,
+  Products,
+  ContentWrapper,
+  ProductFormSection
+} from "./Style";
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
       products: [],
-      newItem: "",
-      newPrice: "",
-      newCurrency: "UAH",
-      dateOfSale: "",
     };
   }
 
-  updateVal = e => {
+  handleNewProduct = newProduct => {
     this.setState({
-      newItem: e.target.value
+      products: [...this.state.products, newProduct]
     });
   };
 
-  updatePrice = e => {
-    this.setState({
-      newPrice: e.target.value
-    });
-  };
-
-  updateCurr = e => {
-    this.setState({
-      newCurrency: e.target.value
-    });
-  };
-
-  updateDate = e => {
-    this.setState({
-      dateOfSale: e.target.value
-    });
-  };
-
-
-  handleSubmit = e => {
-    this.setState({
-      products: [
-        ...this.state.products,
-        {
-          date: this.state.dateOfSale,
-          product: this.state.newItem,
-          price: this.state.newPrice,
-          currency: this.state.newCurrency,
-        }
-      ],
-      newItem: "",
-      newPrice: "",
-      newCurrency: "UAH",
-      dateOfSale: ""
-    });
-    e.preventDefault();
-  };
-
-  onClearClick = date => {
-    console.log(date);
+  handleClear = date => {
     this.setState({
       products: this.state.products.filter(el => el.date !== date)
     });
   };
 
-
-  componentDidMount() {
+ componentDidMount() {
     this.hydrateStateWithLocalStorage();
     window.addEventListener(
       "beforeunload",
@@ -107,48 +52,52 @@ class Main extends Component {
     localStorage.setItem("products", JSON.stringify(this.state.products));
   }
 
-  /*render*/
-
   render() {
-    const groupedProducts = groupByDate(this.state.products);
-    let sortByDate = groupedProducts.sort(function(a, b) {
+    const groupedProducts = groupProductsByDate(this.state.products);
+    let sortedByDate = groupedProducts.sort(function(a, b) {
       return new Date(b.date) - new Date(a.date);
     });
 
-    /*return */
     return (
       <>
-        <Content>
-          <FormProduct>
-            <Form>
+        <ContentWrapper>
+          <ProductFormSection>
+            <ProductFormWrapper>
               <header>Accounting App</header>
-              <AddProduct
-                onHandleSubmit={this.handleSubmit}
-                product={this.state.newItem}
-                onAddProduct={this.updateVal}
-                price={this.state.newPrice}
-                onAddPrice={this.updatePrice}
-                curr={this.state.newCurrency}
-                onEddCurr={this.updateCurr}
-                date={this.state.dateOfSale}
-                onEddDate={this.updateDate}
+              <ProductForm
+                onAddProduct={this.handleNewProduct}
               />
-            </Form>
+            </ProductFormWrapper>
 
             <Products>
               <header>Products</header>
-              <Table 
-              sortedProducts={sortByDate} 
-              onClear={this.onClearClick} />
+              <ProductsTable sortedProducts={sortedByDate} onClearDate={this.handleClear} />
             </Products>
-          </FormProduct>
-        </Content>
+          </ProductFormSection>
+        </ContentWrapper>
         <ReportForm
-          sortedProducts={sortByDate}
+          sortedProducts={sortedByDate}
           products={this.state.products}
         />
       </>
     );
   }
 }
+
 export default Main;
+
+function groupProductsByDate(products) {
+  let groups = {};
+  for (let product of products) {
+    let date = product.date;
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(product);
+  }
+  const groupedProducts = [];
+  for (let date in groups) {
+    groupedProducts.push({ date: date, items: groups[date] });
+  }
+  return groupedProducts;
+}

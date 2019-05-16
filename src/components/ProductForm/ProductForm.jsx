@@ -1,34 +1,73 @@
 import React, { Component } from "react";
 import { InputBox, Data, Button, Submit } from "../Main/Style";
 
-class AddProduct extends Component {
+class ProductForm extends Component {
+  state = {
+    name: "",
+    price: "",
+    currency: "UAH",
+    date: ""
+  };
+
+  updateName = e => {
+    this.setState({
+      name: e.target.value
+    });
+  };
+
+  updatePrice = e => {
+    this.setState({
+      price: e.target.value
+    });
+  };
+
+  updateCurrency = e => {
+    this.setState({
+      currency: e.target.value
+    });
+  };
+
+  updateDate = e => {
+    this.setState({
+      date: e.target.value
+    });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.onAddProduct(this.state);
+    this.setState({
+      name: "",
+      price: "",
+      date: ""
+    })
+  }
+
   render() {
     return (
       <>
         <form
           method="send"
-          onSubmit={this.props.onHandleSubmit}
+          onSubmit={this.handleSubmit}
           autoComplete="off"
         >
-          {/*Text */}
           <InputBox>
             <label htmlFor="product"> Add new product: </label>
             <input
               type="text"
-              value={this.props.product}
-              onChange={this.props.onAddProduct}
+              value={this.state.name}
+              onChange={this.updateName}
               placeholder="Enter your product"
               name="product"
               required
             />
           </InputBox>
-          {/*Price */}
           <Data>
             <InputBox>
               <label htmlFor="price">Price:</label>
               <input
-                value={this.props.price}
-                onChange={this.props.onAddPrice}
+                value={this.state.price}
+                onChange={this.updatePrice}
                 type="number"
                 step="0.01"
                 min="0"
@@ -37,13 +76,12 @@ class AddProduct extends Component {
                 required
               />
             </InputBox>
-            {/*Currency */}
             <InputBox>
               <label htmlFor="currency">¤</label>
               <select
                 name="currency"
-                value={this.props.curr}
-                onChange={this.props.onEddCurr}
+                value={this.state.currency}
+                onChange={this.updateCurrency}
                 required
               >
                 <option value="UAH">UAH</option>
@@ -53,12 +91,11 @@ class AddProduct extends Component {
               </select>
             </InputBox>
             <InputBox>
-              {/*Date */}
               <label htmlFor=""> Date: </label>
               <input
                 type="date"
-                value={this.props.date}
-                onChange={this.props.onEddDate}
+                value={this.state.date}
+                onChange={this.updateDate}
                 name="date"
                 placeholder="Date"
                 required
@@ -74,4 +111,4 @@ class AddProduct extends Component {
   }
 }
 
-export default AddProduct;
+export default ProductForm;

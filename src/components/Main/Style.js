@@ -1,18 +1,19 @@
 import styled from 'styled-components';
 
-export const Content = styled.section `
+export const ContentWrapper = styled.section `
     display: flex;
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
     box-sizing: border-box;
 `
-export const FormProduct = styled.section `
+export const ProductFormSection = styled.section `
     display: flex;
     flex-direction: column;
     width: 100%;
     `
-export const  Form = styled.div `
+
+export const  ProductFormWrapper = styled.div `
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -224,6 +225,7 @@ export const CurrentDate = styled.div `
     height: 20px;
     font-size: 0.9rem;
     div:last-child {
+        cursor: pointer;
         padding-left: 20px;
         color: #497552;
         &:hover {
