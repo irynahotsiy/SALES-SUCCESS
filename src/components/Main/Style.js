@@ -114,12 +114,13 @@ export const Report = styled.div `
     }
     header { 
         text-align: center;
-        font-size: 1.8rem;
+        font-size: 2.5rem;
         text-transform: capitalize;
         color: #497552;
         padding: 30px 0;
         @media (max-width: 809px) {
             width: 100%;
+            font-size: 2.0rem;
         }
     }
     
