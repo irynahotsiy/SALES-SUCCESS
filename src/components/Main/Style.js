@@ -26,7 +26,7 @@ export const  Form = styled.div `
         color: #497552;
         font-size: 2.5rem;
         text-align: center;
-        text-transform: uppercase;
+        text-transform: capitalize;
         @media (max-width: 809px) {
             padding: 10px 0;
             font-size: 2rem;
