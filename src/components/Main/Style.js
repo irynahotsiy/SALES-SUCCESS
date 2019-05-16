@@ -79,10 +79,10 @@ export const Button = styled.div `
     justify-content: center;
     margin-top: 20px;
   `
-  export const InputBox = styled.div `
-  display: flex;
-  flex-direction: column;
-  margin: 10px 0;
+export const InputBox = styled.div `
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
        @media (max-width: 809px) {
            width: 100%;
            margin: 0;
@@ -147,6 +147,7 @@ export const Sum = styled.div `
     font-size: 2.5rem;
     color: #497552;
     text-align: center;
+    height: 64px;
     @media (max-width: 809px) {
         font-size: 2rem;
     }
@@ -245,3 +246,91 @@ export const DateButton = styled.button `
     border: 1px solid rgba(255, 166, 0, 1);
     text-transform: uppercase;
 `
+
+export const Load  = styled.div `
+    color: official;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 64px;
+    height: 64px;
+    
+    div {
+        transform-origin: 32px 32px;
+        animation: load 2s linear infinite;
+    }
+    div:after {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 3px;
+        left: 29px;
+        width: 5px;
+        height: 14px;
+        border-radius: 20%;
+        background: #497552;
+    }
+    div:nth-child(1) {
+        transform: rotate(0deg);
+        animation-delay: -1.1s;
+    }
+    div:nth-child(2) {
+        transform: rotate(30deg);
+        animation-delay: -1s;
+    }
+    div:nth-child(3) {
+        transform: rotate(60deg);
+        animation-delay: -0.9s;
+    }
+    div:nth-child(4) {
+        transform: rotate(90deg);
+        animation-delay: -0.8s;
+    }
+    div:nth-child(5) {
+        transform: rotate(120deg);
+        animation-delay: -0.7s;
+    }
+    div:nth-child(6) {
+        transform: rotate(150deg);
+        animation-delay: -0.6s;
+    }
+    div:nth-child(7) {
+        transform: rotate(180deg);
+        animation-delay: -0.5s;
+    }
+    div:nth-child(8) {
+        transform: rotate(210deg);
+        animation-delay: -0.4s;
+    }
+    div:nth-child(9) {
+        transform: rotate(240deg);
+        animation-delay: -0.3s;
+    }
+    div:nth-child(10) {
+        transform: rotate(270deg);
+        animation-delay: -0.2s;
+    }
+    div:nth-child(11) {
+        transform: rotate(300deg);
+        animation-delay: -0.1s;
+    }
+    div:nth-child(12) {
+        transform: rotate(330deg);
+        animation-delay: 0s;
+    }
+    @keyframes load {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+`
+
+   
+
+
+    
