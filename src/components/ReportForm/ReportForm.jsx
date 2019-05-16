@@ -53,6 +53,7 @@ class ReportForm extends Component {
     let year = parseInt(this.state.year);
     let products = this.props.products.filter(el => parseInt(el.date) === year);
     let curr = this.state.curr;
+    /*Use https://cors.io/? to fix http/https limitation */ 
     let url =
       "https://cors.io/?http://data.fixer.io/api/latest?access_key=5e2e34b6141b185a648f1be0c2a84530&symbols=UAH,PLN,USD";
     this.setState ({
@@ -70,10 +71,8 @@ class ReportForm extends Component {
     } catch (error) {
         console.log(error);
       this.setState({ error, isLoading: false });
-    } finally {
-
-    }
   };
+}
 
   render() {
     let getYears = () => {
@@ -123,7 +122,7 @@ class ReportForm extends Component {
             <Submit type="submit" value="Report" />
           </form>
 
-          <Sum>{this.state.isLoading ? <Loading /> : this.state.report}</Sum>
+          <Sum>{this.state.isLoading ? <Loading/> : this.state.report}</Sum>
         </Report>
       </>
     );
