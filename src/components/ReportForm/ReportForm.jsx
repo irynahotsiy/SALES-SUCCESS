@@ -1,5 +1,31 @@
 import React, { Component } from "react";
 import { Sum, Report, Submit } from "../Main/Style";
+import Loading from "../Loading/Loading";
+
+async function getURL(url) {
+  let response = await fetch(url);
+  let result = await response.json();
+  return result;
+}
+
+function sum(result, items, curr) {
+  let sum = 0;
+  for (let i = 0; i < items.length; i++) {
+    let price = parseFloat(items[i].price);
+    if (curr === "EUR") {
+      if (items[i].currency === result.base) {
+        let priceEUR = price;
+        price = priceEUR;
+      } else {
+        price = price / result.rates[items[i].currency];
+      }
+    } else {
+      price = (price / result.rates[items[i].currency]) * result.rates[curr];
+    }
+    sum += price;
+  }
+  return sum;
+}
 
 class ReportForm extends Component {
   constructor(props) {
@@ -7,7 +33,8 @@ class ReportForm extends Component {
     this.state = {
       year: " ",
       curr: " ",
-      report: " "
+      report: " ",
+      isLoading: false
     };
   }
 
@@ -22,42 +49,30 @@ class ReportForm extends Component {
     });
   };
 
-  onReport = () => {
+  onReport = async () => {
     let year = parseInt(this.state.year);
     let products = this.props.products.filter(el => parseInt(el.date) === year);
+    let curr = this.state.curr;
     let url =
       "https://cors.io/?http://data.fixer.io/api/latest?access_key=5e2e34b6141b185a648f1be0c2a84530&symbols=UAH,PLN,USD";
-    fetch(url)
-      .then(response => response.json())
-      .then(
-        result => {
-          let sum = 0;
-          for (let i = 0; i < products.length; i++) {
-            let price = parseFloat(products[i].price);
-            if (this.state.curr === "EUR") {
-              if (products[i].currency === result.base) {
-                let priceEUR = price;
-                price = priceEUR;
-              } else {
-                price = price / result.rates[products[i].currency];
-              }
-            } else {
-              price =
-                (price / result.rates[products[i].currency]) *
-                result.rates[this.state.curr];
-            }
-            sum += price;
-          }
-          this.setState({
-            report: sum.toFixed(2) + " " + this.state.curr
-          });
-        },
-        error => {
-          this.setState({
-            error
-          });
-        }
-      );
+    this.setState ({
+        isLoading: true
+    })
+    try {
+      const rates = await getURL(url);
+
+      let finalSum = sum(rates, products, curr);
+      this.setState({
+        report: finalSum.toFixed(2) + " " + this.state.curr,
+        isLoading: false
+      });
+
+    } catch (error) {
+        console.log(error);
+      this.setState({ error, isLoading: false });
+    } finally {
+
+    }
   };
 
   render() {
@@ -91,7 +106,9 @@ class ReportForm extends Component {
                 Chose Year
               </option>
               {years.map(el => (
-                <option key={el} value={el}>{el}</option>
+                <option key={el} value={el}>
+                  {el}
+                </option>
               ))}
             </select>
             <select defaultValue={""} onChange={this.updateCurrency} required>
@@ -105,7 +122,8 @@ class ReportForm extends Component {
             </select>
             <Submit type="submit" value="Report" />
           </form>
-          <Sum>{this.state.report}</Sum>
+
+          <Sum>{this.state.isLoading ? <Loading /> : this.state.report}</Sum>
         </Report>
       </>
     );
