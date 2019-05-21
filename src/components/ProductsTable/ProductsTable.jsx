@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { CurrentDate, DateStyle, ProductStyle } from "../Main/Style";
 
-class Table extends Component {
+class ProductsTable extends Component {
   
   render() {
     return (
@@ -23,7 +23,7 @@ class Table extends Component {
                       <div>{el.date}</div>
                       <div
                         onClick={() => {
-                          this.props.onClear(el.date);
+                          this.props.onClearDate(el.date);
                         }}
                       >
                         Clear all of this date
@@ -33,7 +33,7 @@ class Table extends Component {
                 </DateStyle>
                 {el.items.map((item, idx)=> (
                   <ProductStyle key={idx}>
-                    <td>{item.product}</td>
+                    <td>{item.name}</td>
                     <td>{item.price}</td>
                     <td>{item.currency}</td>
                   </ProductStyle>
@@ -47,4 +47,4 @@ class Table extends Component {
   }
 }
 
-export default Table;
+export default ProductsTable;
