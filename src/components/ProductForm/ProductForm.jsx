@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { InputBox, Data, Button, Submit } from "../Main/Style";
+// import { getRates } from "../../services/Report";
 
 class ProductForm extends Component {
-  state = {
+  constructor (props) {
+  super (props);
+  this.state = {
     name: "",
     price: "",
     currency: "UAH",
     date: ""
   };
-
+}
   updateName = e => {
     this.setState({
       name: e.target.value
@@ -44,6 +47,7 @@ class ProductForm extends Component {
   }
 
   render() {
+    
     return (
       <>
         <form
@@ -70,7 +74,7 @@ class ProductForm extends Component {
                 onChange={this.updatePrice}
                 type="number"
                 step="0.01"
-                min="0"
+                min="0.01"
                 name="price"
                 placeholder="Price"
                 required
