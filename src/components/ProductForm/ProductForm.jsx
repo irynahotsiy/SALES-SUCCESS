@@ -3,15 +3,15 @@ import { InputBox, Data, Button, Submit } from "../Main/Style";
 // import { getRates } from "../../services/Report";
 
 class ProductForm extends Component {
-  constructor (props) {
-  super (props);
-  this.state = {
-    name: "",
-    price: "",
-    currency: "UAH",
-    date: ""
-  };
-}
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      price: "",
+      currency: "UAH",
+      date: ""
+    };
+  }
   updateName = e => {
     this.setState({
       name: e.target.value
@@ -36,25 +36,31 @@ class ProductForm extends Component {
     });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     this.props.onAddProduct(this.state);
     this.setState({
       name: "",
       price: "",
       date: ""
-    })
-  }
+    });
+  };
+
+  getDate = () => {
+    let date = new Date();
+    let fullMonth = "";
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      fullMonth = "0" + month;
+    }
+    return date.getFullYear() + "-" + fullMonth + "-" + date.getDate();
+  };
 
   render() {
-    
+    let fullDateNow = this.getDate();
     return (
       <>
-        <form
-          method="send"
-          onSubmit={this.handleSubmit}
-          autoComplete="off"
-        >
+        <form method="send" onSubmit={this.handleSubmit} autoComplete="off">
           <InputBox>
             <label htmlFor="product"> Add new product: </label>
             <input
@@ -102,6 +108,8 @@ class ProductForm extends Component {
                 onChange={this.updateDate}
                 name="date"
                 placeholder="Date"
+                min="2017-12-29"
+                max={fullDateNow}
                 required
               />
             </InputBox>
