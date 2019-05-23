@@ -252,27 +252,32 @@ export const DateButton = styled.button `
     border: 1px solid rgba(255, 166, 0, 1);
     text-transform: uppercase;
 `
+export const LoadBox = styled.section `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: -webkit-fill-available;
 
+`
 export const Load  = styled.div `
     color: official;
-    display: inline-block;
     position: relative;
     text-align: center;
-    width: 64px;
-    height: 64px;
+    width: 128px;
+    height: 128px;
     
     div {
-        transform-origin: 32px 32px;
+        transform-origin: 64px 64px;
         animation: load 2s linear infinite;
     }
     div:after {
         content: " ";
         display: block;
         position: absolute;
-        top: 3px;
-        left: 29px;
-        width: 5px;
-        height: 14px;
+        top: 6px;
+        left: 56px;
+        width: 10px;
+        height: 28px;
         border-radius: 20%;
         background: #497552;
     }
@@ -335,7 +340,21 @@ export const Load  = styled.div `
     }
 
 `
-
+export const ErrorMessage = styled.section `
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: -webkit-fill-available;
+    color: rgba(150, 150, 150, 1);
+    font-weight: 400;
+    font-size: 1rem;
+    p {
+        padding: 0;
+        margin: 0;
+        line-height: 2;
+    }
+`
    
 
 

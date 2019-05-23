@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import ProductForm from "../ProductForm/ProductForm";
 import ProductsTable from "../ProductsTable/ProductsTable";
 import ReportForm from "../ReportForm/ReportForm";
+import { getRates } from "../../services/Report";
+import Loading  from "../Loading/Loading";
+import { LoadBox } from "./Style";
+import Error from "../Error/Error";
 
 import {
   ProductFormWrapper,
@@ -15,6 +19,8 @@ class Main extends Component {
     super(props);
     this.state = {
       products: [],
+      currencyRates: [],
+      isLoading: true,
     };
   }
 
@@ -30,7 +36,21 @@ class Main extends Component {
     });
   };
 
- componentDidMount() {
+ async componentDidMount() {
+  try {
+    let rates = await getRates();
+    console.log(rates);
+    let keys = Object.keys(rates.rates);
+    this.setState ({
+      currencyRates: keys,
+      isLoading: false,
+    });
+  } catch (error) {
+    console.log(error);
+    this.setState({ error, isLoading: false });
+  }
+    
+    console.log(this.state.currencyRates);
     this.hydrateStateWithLocalStorage();
     window.addEventListener(
       "beforeunload",
@@ -51,12 +71,27 @@ class Main extends Component {
   saveStateToLocalStorage() {
     localStorage.setItem("products", JSON.stringify(this.state.products));
   }
-
+    
+  
+    
   render() {
     const groupedProducts = groupProductsByDate(this.state.products);
     let sortedByDate = groupedProducts.sort(function(a, b) {
       return new Date(b.date) - new Date(a.date);
     });
+
+    if (this.state.isLoading) {
+      return (
+        <LoadBox>
+          <Loading />
+        </LoadBox>
+      )
+    }
+    else if (this.state.error) {
+      return (
+      <Error />
+      )
+    }
 
     return (
       <>
@@ -66,6 +101,7 @@ class Main extends Component {
               <header>Accounting App</header>
               <ProductForm
                 onAddProduct={this.handleNewProduct}
+                currTypes={this.state.currencyRates}
               />
             </ProductFormWrapper>
 
@@ -78,6 +114,7 @@ class Main extends Component {
         <ReportForm
           sortedProducts={sortedByDate}
           products={this.state.products}
+          currTypes={this.state.currencyRates}
         />
       </>
     );
