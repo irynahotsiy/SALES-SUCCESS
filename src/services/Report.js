@@ -1,12 +1,14 @@
 /* Use https://jsonp.afeld.me/? to fix http/https limitation */
-const FIXER_ENDPOINT = "https://jsonp.afeld.me/?url=http%3A%2F%2Fdata.fixer.io%2Fapi%2Flatest%3Faccess_key%3D5e2e34b6141b185a648f1be0c2a84530%26symbols%3DUAH%2CPLN%2CUSD";
+const FIXER_ENDPOINT = "https://jsonp.afeld.me/?url=http%3A%2F%2Fdata.fixer.io%2Fapi%2Flatest%3Faccess_key%3D5e2e34b6141b185a648f1be0c2a84530";
 
 let cachedRates = null;
 
-async function getRates() {
+export async function getRates() {
   let response = await fetch(FIXER_ENDPOINT);
-  let result = await response.json();
-  return result;
+   if (!cachedRates) {
+    cachedRates = await response.json();
+  }
+ return cachedRates;
 }
 
 function calculateReport(rates, items, targetCurrency) {
@@ -33,8 +35,5 @@ function calculateReport(rates, items, targetCurrency) {
 
 
 export async function prepareReport(items, targetCurrency) {
-  if (!cachedRates) {
-    cachedRates = await getRates();
-  }
   return calculateReport(cachedRates, items, targetCurrency);
 }

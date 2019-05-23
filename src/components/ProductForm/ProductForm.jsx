@@ -94,10 +94,10 @@ class ProductForm extends Component {
                 onChange={this.updateCurrency}
                 required
               >
-                <option value="UAH">UAH</option>
-                <option value="USD">USD</option>
-                <option value="PLN">PLN</option>
-                <option value="EUR">EUR</option>
+              {this.props.currTypes.map((el) => (
+                  <option key={el} value={el}>{el}</option>
+                ))}
+
               </select>
             </InputBox>
             <InputBox>

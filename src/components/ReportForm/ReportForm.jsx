@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Sum, Report, Submit } from "../Main/Style";
-import Loading from "../Loading/Loading";
+
 
 import { prepareReport } from "../../services/Report";
 
@@ -11,7 +11,6 @@ class ReportForm extends Component {
       year: " ",
       targetCurrency: " ",
       report: " ",
-      isLoading: false
     };
   }
 
@@ -31,20 +30,10 @@ class ReportForm extends Component {
     let products = this.props.products.filter(el => parseInt(el.date) === year);
     let curr = this.state.targetCurrency;
 
-    this.setState({
-      isLoading: true
-    });
-
-    try {
       let finalSum = await prepareReport(products, curr);
       this.setState({
         report: finalSum.toFixed(2) + " " + curr,
-        isLoading: false
       });
-    } catch (error) {
-      console.log(error);
-      this.setState({ error, isLoading: false });
-    }
   };
 
   render() {
@@ -78,18 +67,19 @@ class ReportForm extends Component {
               ))}
             </select>
             <select defaultValue={""} onChange={this.updateCurrency} required>
+            
               <option value="" disabled>
                 Currency
-              </option>
-              <option value="UAH">UAH</option>
-              <option value="USD">USD</option>
-              <option value="PLN">PLN</option>
-              <option value="EUR">EUR</option>
+                </option>
+                { this.props.currTypes.map(el => (
+                  <option key={el} value={el}>{el}</option>
+                ))}
+                
             </select>
             <Submit type="submit" value="Report" />
           </form>
 
-          <Sum>{this.state.isLoading ? <Loading /> : this.state.report}</Sum>
+          <Sum>{this.state.report}</Sum>
         </Report>
       </>
     );
