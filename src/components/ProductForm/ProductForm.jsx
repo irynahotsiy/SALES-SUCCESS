@@ -52,8 +52,12 @@ class ProductForm extends Component {
     let month = date.getMonth() + 1;
     if (month < 10) {
       fullMonth = "0" + month;
+    } 
+    let day = date.getDate();
+    if ( day < 10) {
+      day = "0" + day;
     }
-    return date.getFullYear() + "-" + fullMonth + "-" + date.getDate();
+     date.getFullYear() + "-" + fullMonth + "-" + day;
   };
 
   render() {
