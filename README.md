@@ -10,6 +10,3 @@ This app was created using Create React App.
 - report section is in the right column
   - choose desired Year and Currency
   - click "Report button" and you will see the results bellow
-
-## Notes
-I store the data in the localStorage because I'm not comfortable with Node.js and creating own APIs yet.
